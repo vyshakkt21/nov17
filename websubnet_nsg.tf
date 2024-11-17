@@ -1,5 +1,5 @@
 resource "azurerm_subnet" "websubnet" {
-  name = "${var.vnet_name}-${var.web_subnet_name}"
+  name = "${azurerm_virtual_network.vnet.name}-${var.web_subnet_name}"
   resource_group_name = azurerm_resource_group.rg1.name
   virtual_network_name = azurerm_virtual_network.vnet.name
   address_prefixes = var.web_subnet_address
