@@ -20,9 +20,10 @@ resource "azurerm_subnet_network_security_group_association" "web_subnet_nsg_ass
 }
 locals {
   web_inbound_ports_map={
-    "100" : "80",
+   
     "110" :"443",
     "120" : "22"
+    "130"  : "53"
   }
 }
 resource "azurerm_network_security_rule" "nsgrule" {
@@ -34,7 +35,7 @@ resource "azurerm_network_security_rule" "nsgrule" {
   protocol                    = "Tcp"
   source_port_range           = "*"
   destination_port_range      = each.value 
-  source_address_prefix       = "*"
+  source_address_prefixes       = each.key == "120" ? ["172.65.45.7", "10.0.0.0/24"] : ["10.0.0.0/24"] 
   destination_address_prefix  = "*"
   resource_group_name         = azurerm_resource_group.rg1.name
   network_security_group_name = azurerm_network_security_group.websubnet_nsg.name 
